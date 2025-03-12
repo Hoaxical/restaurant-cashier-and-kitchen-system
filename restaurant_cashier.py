@@ -117,15 +117,15 @@ class Cashier:
         #create a 'menu_dishes' dictionary
 
         menu_dishes = {
-            "Biryani": Biryani,
-            "Seven Curry": SevenCurry,
-            "Mozzarella Pizza": MozzarellaPizza,
-            "Classic Pizza": ClassicPizza,
-            "Veggie Burger": VegBurger,
-            "Chicken Burger": ChickenBurger,
-            "Beef Burger": BeefBurger,
-            "Fried Rice": FriedRice,
-            "Fried Noodles": FriedNoodles,
+            "biryani": Biryani,
+            "seven curry": SevenCurry,
+            "mozzarella pizza": MozzarellaPizza,
+            "classic pizza": ClassicPizza,
+            "veggie burger": VegBurger,
+            "chicken burger": ChickenBurger,
+            "beef burger": BeefBurger,
+            "fried rice": FriedRice,
+            "fried noodles": FriedNoodles,
         }
 
         #Prompt user to input menu
@@ -140,7 +140,7 @@ class Cashier:
         #while checkout is false, user is free to input more menu dishes
 
         while not checkout:
-            food_input = input("Enter menu item to order (or type 'exit' to finish): ").strip()
+            food_input = input("Enter menu item to order (or type 'exit' to finish): ").strip().lower()
 
             if food_input.lower() == "exit": #once user enters "exit",
                 checkout = True #checkout is initiated to true and no more menu dishes can be entered
