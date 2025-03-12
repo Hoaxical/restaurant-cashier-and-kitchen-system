@@ -1,5 +1,4 @@
 # Create parent class Menu
-
 class Menu:
     def __init__(self, name):
         self._name = name
@@ -14,11 +13,8 @@ class Menu:
     
 
 # Using Multilevel and Hierarchical Inheritance
-
-#Dishes is a sub class/Child class of Menu
-
 class Dishes(Menu):
-    def __init__(self, name, price, preparation_time, ready_availability = 0):
+    def __init__(self, name, price, preparation_time, ready_availability=0):
         super().__init__(name)
         self._price = price
         self._preparation_time = preparation_time
@@ -38,91 +34,118 @@ class Dishes(Menu):
     
     @property
     def ready_availability(self):
-        return self.ready_availability()
+        return self._ready_availability  # Fixed reference
     
     @ready_availability.setter
     def ready_availability(self, value):
         self._ready_availability = value
     
-# Specials is a sub class of sub class Dishes
+
 class Specials(Dishes):
-    def __init__(self, name, price, preparation_time, ready_availability):
+    def __init__(self, name, price, preparation_time, ready_availability=0):
         super().__init__(name, price, preparation_time, ready_availability)
 
-# Biryani, Seven Curry are sub classes of Specials
+
 class Biryani(Specials):
-    def __init__(self, name, price = 150, preparation_time = 8, ready_availability = 0):
-        super().__init__("Biryani", preparation_time, ready_availability)
+    def __init__(self):
+        super().__init__("Biryani", 150, 8, 0)
+
 
 class SevenCurry(Specials):
-    def __init__(self, name, price = 129, preparation_time = 15, ready_availability = 0):
-        super().__init__("Seven Curry", price, preparation_time, ready_availability)
+    def __init__(self):
+        super().__init__("Seven Curry", 129, 15, 0)
 
-# Pizza is a sub class of Dishes
+
 class Pizza(Dishes):
-    def __init__(self, name, price, preparation_time = 10, ready_availability = 0):
+    def __init__(self, name, price, preparation_time=10, ready_availability=0):
         super().__init__(name, price, preparation_time, ready_availability)
 
-#Mozzarella Pizza, Classic Pizza is a sub class of Pizza
+
 class MozzarellaPizza(Pizza):
-    def __init__(self, name, price = 249, preparation_time = 10, ready_availability = 0):
-        super().__init__("Mozzarella Pizza", price, preparation_time, ready_availability)
+    def __init__(self):
+        super().__init__("Mozzarella Pizza", 249, 10, 0)
+
 
 class ClassicPizza(Pizza):
-    def __init__(self, name, price = 209, preparation_time = 10, ready_availability = 0):
-        super().__init__("Classic Pizza", price, preparation_time, ready_availability)
+    def __init__(self):
+        super().__init__("Classic Pizza", 209, 10, 0)
 
-# Burger is a sub class of Dishes
+
 class Burger(Dishes):
-    def __init__(self, name, price, preparation_time = 3, ready_availability = 0):
+    def __init__(self, name, price, preparation_time=3, ready_availability=0):
         super().__init__(name, price, preparation_time, ready_availability)
 
-# VegBurger, Chicken Burger, BeefBurger are sub classes of Burger
+
 class VegBurger(Burger):
-    def __init__(self, name = "Veggie Burger", price = 79, preparation_time=3, ready_availability = 0):
-        super().__init__("Veggie Burger", price, preparation_time, ready_availability)
+    def __init__(self):
+        super().__init__("Veggie Burger", 79, 3, 0)
+
 
 class ChickenBurger(Burger):
-    def __init__(self, name, price = 99, preparation_time=3, ready_availability = 0):
-        super().__init__("Chicken Burger", price, preparation_time, ready_availability)
+    def __init__(self):
+        super().__init__("Chicken Burger", 99, 3, 0)
+
 
 class BeefBurger(Burger):
-    def __init__(self, name, price = 109, preparation_time=3, ready_availability = 0):
-        super().__init__("Beef Burger", price, preparation_time, ready_availability)
+    def __init__(self):
+        super().__init__("Beef Burger", 109, 3, 0)
 
-# FriedRice, FriedNoodles are sub classes of Dishes
+
 class FriedRice(Dishes):
-    def __init__(self, name, price = 150, preparation_time = 8, ready_availability = 0):
-        super().__init__("Fried Rice", price, preparation_time, ready_availability)
+    def __init__(self):
+        super().__init__("Fried Rice", 150, 8, 0)
+
 
 class FriedNoodles(Dishes):
-    def __init__(self, name, price = 125, preparation_time = 5, ready_availability = 0):
-        super().__init__("Fried Noodles", price, preparation_time, ready_availability)
+    def __init__(self):
+        super().__init__("Fried Noodles", 125, 5, 0)
 
 
-
-
-
-
-
-
-#temporary ///I am testing how I can add user prompts and how each attribute will work. 
 class Cashier:
-    def __init__(self, name ="Cashier"):
+    def __init__(self, name="Cashier"):
         self._name = name
     
     def CreateOrder(self):
+        checkout = False
 
-        #For user prompt instead of burger1 = VegBurger(), I could make the user prompt the exact name of the dish's name. That would prompt the variable at class.
+        menu_dishes = {
+            "Biryani": Biryani,
+            "Seven Curry": SevenCurry,
+            "Mozzarella Pizza": MozzarellaPizza,
+            "Classic Pizza": ClassicPizza,
+            "Veggie Burger": VegBurger,
+            "Chicken Burger": ChickenBurger,
+            "Beef Burger": BeefBurger,
+            "Fried Rice": FriedRice,
+            "Fried Noodles": FriedNoodles,
+        }
 
-        burger1 = VegBurger() #I fixed the code. I need to assign the names at def__init__ when I declare class, not at super().__init__
+        print("You may choose the following:")
+        for dish_name, dish_class in menu_dishes.items():
+            dish_instance = dish_class()
+            print(f"{dish_instance.name}: Rs {dish_instance.price}")
 
-        print (f"{burger1.name}: Rs {burger1.price}")
+        order = []
+        
+        while not checkout:
+            food_input = input("Enter menu item to order (or type 'exit' to finish): ").strip()
 
+            if food_input.lower() == "exit":
+                checkout = True
+                continue
 
+            if food_input in menu_dishes:
+                dish = menu_dishes[food_input]()
+                order.append(dish)
+                print(f"Added: {dish.name} - Rs {dish.price}")
+            else:
+                print("Invalid selection. Please try again.")
 
+        print("\nYour Order Summary:")
+        for item in order:
+            print(f"- {item.name}: Rs {item.price}")
 
-
+        print("Thank you for ordering!")
 
 
 def main():
@@ -131,4 +154,3 @@ def main():
 
 
 main()
-        
