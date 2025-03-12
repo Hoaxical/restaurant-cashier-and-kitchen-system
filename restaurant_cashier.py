@@ -215,3 +215,14 @@ while True:  # Keep looping until the user stops the cashier
         )
     else:
         print("Invalid input. Please press 1 to start or 2 to stop.")
+
+
+
+
+
+# FOR KITCHEN SYSTEM
+# SEND ORDER DETAILS TO KITCHEN
+
+# CREATE PARENT CLASS KITCHEN
+# UPDATE READY_AVAILABILITY VALUES USING SETTERS
+# DO THE FUCKING SHIT!!!
