@@ -101,13 +101,16 @@ class FriedNoodles(Dishes):
         super().__init__("Fried Noodles", 125, 5, 0)
 
 
+
 class Cashier:
     def __init__(self, name="Cashier"):
         self._name = name
     
-    def CreateOrder(self):
-        checkout = False
+    def CreateOrder(self, alphabet_array, current_alphabet_index, current_number):
 
+
+        checkout = False
+        
         menu_dishes = {
             "Biryani": Biryani,
             "Seven Curry": SevenCurry,
@@ -123,10 +126,11 @@ class Cashier:
         print("You may choose the following:")
         for dish_name, dish_class in menu_dishes.items():
             dish_instance = dish_class()
-            print(f"{dish_instance.name}: Rs {dish_instance.price}")
+            print(f"{dish_instance.name} => Rs {dish_instance.price}")
 
         order = []
-        
+        _vat, total = 1.15, 0
+
         while not checkout:
             food_input = input("Enter menu item to order (or type 'exit' to finish): ").strip()
 
@@ -138,19 +142,50 @@ class Cashier:
                 dish = menu_dishes[food_input]()
                 order.append(dish)
                 print(f"Added: {dish.name} - Rs {dish.price}")
+
+                total += dish.price
+
             else:
                 print("Invalid selection. Please try again.")
 
+
+        current_number += 1
+
+
+        if current_number >= 9999:
+            current_number = 1
+            current_alphabet_index += 1
+        
+        # Fixed a bug where the current_alphabet_index would exceed length of alphabet_array
+        if current_alphabet_index > (len(alphabet_array)-1):
+            current_alphabet_index = 0
+        
+        order_no = f"{alphabet_array[current_alphabet_index]}{str(current_number).zfill(4)}"
+
         print("\nYour Order Summary:")
-        for item in order:
-            print(f"- {item.name}: Rs {item.price}")
 
-        print("Thank you for ordering!")
+        with open("invoice.txt","w") as invoice_file:
+
+            for item in order:
+                print(f"- {item.name}: Rs {item.price}")
+                invoice_file.write(f"{item.name}: Rs {item.price}\n")
+            
+            total = round(total * _vat, 2)
+            print(f"VAT : {_vat}")
+            print(f"Total (VAT inc.) : Rs {total}")
+            
+
+            invoice_file.write(f"VAT : Rs {_vat} | Total (VAT inc.) : Rs {total}\n")
+
+            print(f"Thank you for ordering! ORDER #{(order_no)}")
+            invoice_file.write(f"Thank you for ordering! ORDER #{(order_no)}\n")
 
 
-def main():
-    cashier = Cashier()
-    cashier.CreateOrder()
+
+alphabet_text = "a b c d e f g h i j k l m n o p q r s t u v w x y z"
+alphabet_array = alphabet_text.upper().split()
 
 
-main()
+cashier = Cashier()
+
+cashier.CreateOrder(alphabet_array, current_alphabet_index = 25, current_number = 9999)

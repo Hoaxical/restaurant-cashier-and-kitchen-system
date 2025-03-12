@@ -1,0 +1,6 @@
+Biryani: Rs 150
+Chicken Burger: Rs 99
+Fried Noodles: Rs 125
+Fried Rice: Rs 150
+VAT : Rs 1.15 | Total (VAT inc.) : Rs 602.6
+Thank you for ordering! ORDER #A0001
