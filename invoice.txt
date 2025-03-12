@@ -1,3 +1,3 @@
-Chicken Burger: Rs 99
-VAT : Rs 1.15 | Total (VAT inc.) : Rs 113.85
-Thank you for ordering! ORDER #A0001
+Fried Rice: Rs 150
+VAT : Rs 1.15 | Total (VAT inc.) : Rs 172.5
+Thank you for ordering! ORDER #A0002

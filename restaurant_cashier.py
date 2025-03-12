@@ -111,7 +111,6 @@ class Cashier:
 
     def CreateOrder(self, alphabet_array, current_alphabet_index, current_number): #Passing variables
 
-
         checkout = False # Initialise checkout to False
         
         #create a 'menu_dishes' dictionary
@@ -187,17 +186,32 @@ class Cashier:
 
             print(f"Thank you for ordering! ORDER #{(order_no)}")
             invoice_file.write(f"Thank you for ordering! ORDER #{(order_no)}\n")
-
+    
+        return current_alphabet_index, current_number
 
 #main program
 
 #initialising alphabet array
 
+# Initialize alphabet array and counters outside the loop
 alphabet_text = "a b c d e f g h i j k l m n o p q r s t u v w x y z"
 alphabet_array = alphabet_text.upper().split()
 
+current_alphabet_index = 0
+current_number = 0
 
-cashier = Cashier() #creating instance
+cashier = Cashier()  # Create an instance of the Cashier class
 
- #passing variables to cashier's method
-cashier.CreateOrder(alphabet_array, current_alphabet_index = 0, current_number = 0)
+while True:  # Keep looping until the user stops the cashier
+    cashier_on_off = int(input("Press 1 to start Cashier | Press 2 to stop Cashier: "))
+    
+    if cashier_on_off == 2:  # Stop the cashier if user inputs 2
+        print("Cashier stopped.")
+        break
+
+    elif cashier_on_off == 1:  # Start the cashier if user inputs 1
+        current_alphabet_index, current_number = cashier.CreateOrder(
+            alphabet_array, current_alphabet_index, current_number
+        )
+    else:
+        print("Invalid input. Please press 1 to start or 2 to stop.")
