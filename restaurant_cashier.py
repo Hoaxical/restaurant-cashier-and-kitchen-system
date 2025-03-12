@@ -34,18 +34,18 @@ class Dishes(Menu):
     
     @property
     def ready_availability(self):
-        return self._ready_availability  # Fixed reference
+        return self._ready_availability
     
     @ready_availability.setter
     def ready_availability(self, value):
         self._ready_availability = value
     
-
+# Creating sub class of Parent Class Dishes
 class Specials(Dishes):
     def __init__(self, name, price, preparation_time, ready_availability=0):
         super().__init__(name, price, preparation_time, ready_availability)
 
-
+# Sub class of sub class Specials
 class Biryani(Specials):
     def __init__(self):
         super().__init__("Biryani", 150, 8, 0)
@@ -70,7 +70,7 @@ class ClassicPizza(Pizza):
     def __init__(self):
         super().__init__("Classic Pizza", 209, 10, 0)
 
-
+#Sub class Burger of Parent class Dishes
 class Burger(Dishes):
     def __init__(self, name, price, preparation_time=3, ready_availability=0):
         super().__init__(name, price, preparation_time, ready_availability)
@@ -101,16 +101,21 @@ class FriedNoodles(Dishes):
         super().__init__("Fried Noodles", 125, 5, 0)
 
 
-
+#Creating another Parent Class Cashier
 class Cashier:
     def __init__(self, name="Cashier"):
         self._name = name
+
     
-    def CreateOrder(self, alphabet_array, current_alphabet_index, current_number):
+    #Cashier's method is to create orders and send them to Kitchen system
+
+    def CreateOrder(self, alphabet_array, current_alphabet_index, current_number): #Passing variables
 
 
-        checkout = False
+        checkout = False # Initialise checkout to False
         
+        #create a 'menu_dishes' dictionary
+
         menu_dishes = {
             "Biryani": Biryani,
             "Seven Curry": SevenCurry,
@@ -123,40 +128,43 @@ class Cashier:
             "Fried Noodles": FriedNoodles,
         }
 
+        #Prompt user to input menu
         print("You may choose the following:")
-        for dish_name, dish_class in menu_dishes.items():
+        for dish_name, dish_class in menu_dishes.items(): #display the available menu
             dish_instance = dish_class()
             print(f"{dish_instance.name} => Rs {dish_instance.price}")
 
-        order = []
-        _vat, total = 1.15, 0
+        order = [] # list called order
+        _vat, total = 1.15, 0 #initialise value added tax and total
+
+        #while checkout is false, user is free to input more menu dishes
 
         while not checkout:
             food_input = input("Enter menu item to order (or type 'exit' to finish): ").strip()
 
-            if food_input.lower() == "exit":
-                checkout = True
+            if food_input.lower() == "exit": #once user enters "exit",
+                checkout = True #checkout is initiated to true and no more menu dishes can be entered
                 continue
 
-            if food_input in menu_dishes:
+            if food_input in menu_dishes: #while checkout is still false, user can keep entering
                 dish = menu_dishes[food_input]()
                 order.append(dish)
                 print(f"Added: {dish.name} - Rs {dish.price}")
 
-                total += dish.price
+                total += dish.price #update total
 
             else:
                 print("Invalid selection. Please try again.")
 
 
-        current_number += 1
+        current_number += 1 #current_number is incremented
 
 
         if current_number >= 9999:
-            current_number = 1
-            current_alphabet_index += 1
+            current_number = 1           #current number is reset back to 1 when current_number reaches 9999
+            current_alphabet_index += 1  #while current_alphabet_index also moves from alphabet 'A' to 'B', the cycle keeps going
         
-        # Fixed a bug where the current_alphabet_index would exceed length of alphabet_array
+        # ---Fixed a bug where the current_alphabet_index would exceed length of alphabet_array---
         if current_alphabet_index > (len(alphabet_array)-1):
             current_alphabet_index = 0
         
@@ -164,7 +172,7 @@ class Cashier:
 
         print("\nYour Order Summary:")
 
-        with open("invoice.txt","w") as invoice_file:
+        with open("invoice.txt","w") as invoice_file: #writes order details to new file / overwrites existing file
 
             for item in order:
                 print(f"- {item.name}: Rs {item.price}")
@@ -181,11 +189,15 @@ class Cashier:
             invoice_file.write(f"Thank you for ordering! ORDER #{(order_no)}\n")
 
 
+#main program
+
+#initialising alphabet array
 
 alphabet_text = "a b c d e f g h i j k l m n o p q r s t u v w x y z"
 alphabet_array = alphabet_text.upper().split()
 
 
-cashier = Cashier()
+cashier = Cashier() #creating instance
 
-cashier.CreateOrder(alphabet_array, current_alphabet_index = 25, current_number = 9999)
+ #passing variables to cashier's method
+cashier.CreateOrder(alphabet_array, current_alphabet_index = 0, current_number = 0)
