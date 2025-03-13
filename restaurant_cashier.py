@@ -107,14 +107,17 @@ class Cashier:
         self._name = name
 
     
-    #Cashier's method is to create orders and send them to Kitchen system
+    # Cashier's method is to process client orders and generate invoice.
+    # After user inputs menu, order details and invoice number is generated and written to
+    # file named 'invoice.txt'. The file is overwritten everytime a new order is created.
+    
 
     def ProcessOrder(self, alphabet_array, current_alphabet_index, current_number): #Passing variables
 
         checkout = False # Initialise checkout to False
         
 
-        #When the user enters what dish he wants from the menu, the user input will
+        # When the user enters what dish he wants from the menu, the user input will
         # be compared against a dictionary called 'menu_dishes'. If the input matches the items
         # in dictionary, the program will create an Instance and store it's necessary data in a list.
 
@@ -139,6 +142,10 @@ class Cashier:
             print(f"{dish_instance.name} => Rs {dish_instance.price}")
 
         order = [] # list called order
+
+        # I initialized _vat to 1.15 to ease Total (Vat Inc.) calculation later on. Assume
+        # VAT is 15%.
+
         _vat, total = 1.15, 0 #initialise value added tax and total
 
         #while checkout is false, user is free to input more menu dishes
@@ -156,22 +163,28 @@ class Cashier:
                      
                     dish = menu_dishes[food_input]()
                     
-                    # THE PROGRAM SHOULD NOT ALLOW NEGATIVE VALUES FOR QUANTITY. 
-                    # TRY TO FIND A FIX FOR THIS ISSUE.
+                    # THE PROGRAM SHOULD NOT ALLOW NEGATIVE OR Number '0' FOR QUANTITY.
                     
-                    try: #TO CHECK IF THIS ERROR HANDLING IS GOOD OR NOT
+                    try:
                         food_quantity = int(input(f"Enter quantity of {menu_dishes[food_input]().name}: "))
                     
-                    except ValueError: #TO CHECK IF THIS ERROR HANDLING IS GOOD OR NOT
-                        negative_val = str(food_quantity).split()[0]
-                        if negative_val == "-":
-                            print("Cannot accept negative quantity value.")
+                        if food_quantity <= 0:  # Reject negative or zero quantity
+                           
+                           print("Cannot accept negative or zero quantity.")
+                           
+                           continue
+                
+                        pass  # if the input is valid, exit loop
+
+                    except ValueError: #TO CHECK IF THIS ERROR HANDLING IS GOOD OR NOT --- PASSED
+                            
+                        print("Cannot accept negative quantity value.")
 
                     order.append((dish, food_quantity))
                     qty_total = dish.price * food_quantity
                     print(f"Added: {food_quantity}x {dish.name} - Rs {qty_total}")
 
-                    total += qty_total #update total
+                    total += qty_total 
                     print(f"Sub-Total: Rs {total}")
                 
                 except ValueError:
@@ -196,29 +209,42 @@ class Cashier:
 
         print("\nYour Order Summary:")
 
+        #I used built-in library to generate current date and time to add to the invoice.txt
+        from datetime import datetime
+        current_time = datetime.now()
+
+        formatted_datetime = current_time.strftime("%Y-%m-%d %H:%M:%S")
+
         with open("invoice.txt","w") as invoice_file: #writes order details to new file / overwrites existing file
 
-            for item, quantity in order:
+            for item, quantity in order: 
                 print(f" {quantity}x {item.name}: Rs {item.price * quantity}")
-                invoice_file.write(f" {quantity}x {item.name}: Rs {item.price * quantity}\n")
+                invoice_file.write(f"{quantity}x {item.name}: Rs {item.price * quantity}\n")
             
             total = round(total * _vat, 2)
             print(f"VAT : 15%")
             print(f"Total (VAT inc.) : Rs {total}")
             
 
-            invoice_file.write(f"VAT : 15% | Total (VAT inc.) : Rs {total}\n")
+            invoice_file.write(f"VAT : 15% | Total (VAT inc.) : Rs {total}\n\n")
 
+            print(f"Ordered at {formatted_datetime}")
+            invoice_file.write(f"Ordered at {formatted_datetime}\n\n")
+            
             print(f"Thank you for ordering! ORDER #{(order_no)}")
             invoice_file.write(f"Thank you for ordering! ORDER #{(order_no)}\n")
     
         return current_alphabet_index, current_number
 
-#main program
+# ------------------ main program starts here -------------------------
 
-#initialising alphabet array
+#----------------------------------------------------------------------
 
-# Initialize alphabet array and counters outside the loop
+# For Order Number generation, I wish to use alphabet before 4 digits.
+# Once the 4 digits reach 9999, the alphabet cycles to the next.
+# For example, 'A9999', becomes 'B0001'.
+
+# Initialise alphabet array
 alphabet_text = "a b c d e f g h i j k l m n o p q r s t u v w x y z"
 alphabet_array = alphabet_text.upper().split()
 
@@ -235,6 +261,11 @@ while True:  # Keep looping until the user stops the cashier
         break
 
     elif cashier_on_off == 1:  # Start the cashier if user inputs 1
+
+        #fixed issue where current_lphabet_index and current_number would reset
+        #after cuser re-inputs 1 -- returned values from ProcessOrder() are now
+        #assigned to the respective variables, that is passed back onto the method.
+
         current_alphabet_index, current_number = cashier.ProcessOrder(
             alphabet_array, current_alphabet_index, current_number
         )
