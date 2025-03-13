@@ -109,7 +109,7 @@ class Cashier:
     
     #Cashier's method is to create orders and send them to Kitchen system
 
-    def CreateOrder(self, alphabet_array, current_alphabet_index, current_number): #Passing variables
+    def ProcessOrder(self, alphabet_array, current_alphabet_index, current_number): #Passing variables
 
         checkout = False # Initialise checkout to False
         
@@ -139,21 +139,30 @@ class Cashier:
         #while checkout is false, user is free to input more menu dishes
 
         while not checkout:
-            food_input = input("Enter menu item to order (or type 'exit' to finish): ").strip().lower()
+            food_input = input("Enter menu item to order (or type 'checkout' to finish): ").strip().lower()
+            
 
-            if food_input.lower() == "exit": #once user enters "exit",
+            if food_input.lower() == "checkout": #once user enters "exit",
                 checkout = True #checkout is initiated to true and no more menu dishes can be entered
                 continue
 
             if food_input in menu_dishes: #while checkout is still false, user can keep entering
-                dish = menu_dishes[food_input]()
-                order.append(dish)
-                print(f"Added: {dish.name} - Rs {dish.price}")
+                try:
+                     
+                    dish = menu_dishes[food_input]()
+                    food_quantity = int(input(f"Enter quantity of {menu_dishes[food_input]().name}: "))
+                    order.append((dish, food_quantity))
+                    qty_total = dish.price * food_quantity
+                    print(f"Added: {food_quantity}x {dish.name} - Rs {qty_total}")
 
-                total += dish.price #update total
+                    total += qty_total #update total
+                    print(f"Sub-Total: Rs {total}")
+                
+                except ValueError:
+                    print("Invalid selection. Please try again.")
 
             else:
-                print("Invalid selection. Please try again.")
+                  print("Invalid selection. Please try again.")
 
 
         current_number += 1 #current_number is incremented
@@ -173,16 +182,16 @@ class Cashier:
 
         with open("invoice.txt","w") as invoice_file: #writes order details to new file / overwrites existing file
 
-            for item in order:
-                print(f"- {item.name}: Rs {item.price}")
-                invoice_file.write(f"{item.name}: Rs {item.price}\n")
+            for item, quantity in order:
+                print(f" {quantity}x {item.name}: Rs {item.price * quantity}")
+                invoice_file.write(f" {quantity}x {item.name}: Rs {item.price * quantity}\n")
             
             total = round(total * _vat, 2)
-            print(f"VAT : {_vat}")
+            print(f"VAT : 15%")
             print(f"Total (VAT inc.) : Rs {total}")
             
 
-            invoice_file.write(f"VAT : Rs {_vat} | Total (VAT inc.) : Rs {total}\n")
+            invoice_file.write(f"VAT : 15% | Total (VAT inc.) : Rs {total}\n")
 
             print(f"Thank you for ordering! ORDER #{(order_no)}")
             invoice_file.write(f"Thank you for ordering! ORDER #{(order_no)}\n")
@@ -210,7 +219,7 @@ while True:  # Keep looping until the user stops the cashier
         break
 
     elif cashier_on_off == 1:  # Start the cashier if user inputs 1
-        current_alphabet_index, current_number = cashier.CreateOrder(
+        current_alphabet_index, current_number = cashier.ProcessOrder(
             alphabet_array, current_alphabet_index, current_number
         )
     else:
@@ -225,4 +234,4 @@ while True:  # Keep looping until the user stops the cashier
 
 # CREATE PARENT CLASS KITCHEN
 # UPDATE READY_AVAILABILITY VALUES USING SETTERS
-# DO THE FUCKING SHIT!!!
+# #AND THEN USE PREPARATION_TIME AND AVAILABILITY AS WEIGHTAGE TO SET A DYNAMIC QUEUE FOR THE KITCHEN SYSTEM TO ORDER PREP 

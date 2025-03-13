@@ -1,3 +1,4 @@
-Fried Rice: Rs 150
-VAT : Rs 1.15 | Total (VAT inc.) : Rs 172.5
-Thank you for ordering! ORDER #A0002
+ 2x Biryani: Rs 300
+ 1x Fried Noodles: Rs 125
+VAT : 15% | Total (VAT inc.) : Rs 488.75
+Thank you for ordering! ORDER #A0001
