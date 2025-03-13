@@ -213,15 +213,15 @@ class Cashier:
         from datetime import datetime
         current_time = datetime.now()
 
-        formatted_datetime = current_time.strftime("%Y-%m-%d %H:%M:%S")
+        formatted_datetime = current_time.strftime("%Y-%m-%d %H:%M:%S") 
 
         with open("invoice.txt","w") as invoice_file: #writes order details to new file / overwrites existing file
 
             for item, quantity in order: 
                 print(f" {quantity}x {item.name}: Rs {item.price * quantity}")
-                invoice_file.write(f"{quantity}x {item.name}: Rs {item.price * quantity}\n")
+                invoice_file.write(f"{quantity}x {item.name}: Rs {item.price * quantity}\n\n") #writing every ordered item to the file
             
-            total = round(total * _vat, 2)
+            total = round(total * _vat, 2) #total is rounded off to 2 dp
             print(f"VAT : 15%")
             print(f"Total (VAT inc.) : Rs {total}")
             
@@ -236,7 +236,9 @@ class Cashier:
     
         return current_alphabet_index, current_number
 
-# ------------------ main program starts here -------------------------
+#----------------------------------------------------------------------
+
+# ------------------ MAIN PROGRAM STARTS HERE -------------------------
 
 #----------------------------------------------------------------------
 
@@ -245,6 +247,7 @@ class Cashier:
 # For example, 'A9999', becomes 'B0001'.
 
 # Initialise alphabet array
+
 alphabet_text = "a b c d e f g h i j k l m n o p q r s t u v w x y z"
 alphabet_array = alphabet_text.upper().split()
 
@@ -281,4 +284,4 @@ while True:  # Keep looping until the user stops the cashier
 
 # CREATE PARENT CLASS KITCHEN
 # UPDATE READY_AVAILABILITY VALUES USING SETTERS
-# #AND THEN USE PREPARATION_TIME AND AVAILABILITY AS WEIGHTAGE TO SET A DYNAMIC QUEUE FOR THE KITCHEN SYSTEM TO ORDER PREP 
+# #AND THEN USE PREPARATION_TIME AND AVAILABILITY AS WEIGHTAGE TO SET A DYNAMIC QUEUE DATA STRUCTURE FOR THE KITCHEN SYSTEM TO ORDER PREP 
