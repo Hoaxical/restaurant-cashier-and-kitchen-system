@@ -113,6 +113,11 @@ class Cashier:
 
         checkout = False # Initialise checkout to False
         
+
+        #When the user enters what dish he wants from the menu, the user input will
+        # be compared against a dictionary called 'menu_dishes'. If the input matches the items
+        # in dictionary, the program will create an Instance and store it's necessary data in a list.
+
         #create a 'menu_dishes' dictionary
 
         menu_dishes = {
@@ -130,7 +135,7 @@ class Cashier:
         #Prompt user to input menu
         print("You may choose the following:")
         for dish_name, dish_class in menu_dishes.items(): #display the available menu
-            dish_instance = dish_class()
+            dish_instance = dish_class() 
             print(f"{dish_instance.name} => Rs {dish_instance.price}")
 
         order = [] # list called order
@@ -150,7 +155,18 @@ class Cashier:
                 try:
                      
                     dish = menu_dishes[food_input]()
-                    food_quantity = int(input(f"Enter quantity of {menu_dishes[food_input]().name}: "))
+                    
+                    # THE PROGRAM SHOULD NOT ALLOW NEGATIVE VALUES FOR QUANTITY. 
+                    # TRY TO FIND A FIX FOR THIS ISSUE.
+                    
+                    try: #TO CHECK IF THIS ERROR HANDLING IS GOOD OR NOT
+                        food_quantity = int(input(f"Enter quantity of {menu_dishes[food_input]().name}: "))
+                    
+                    except ValueError: #TO CHECK IF THIS ERROR HANDLING IS GOOD OR NOT
+                        negative_val = str(food_quantity).split()[0]
+                        if negative_val == "-":
+                            print("Cannot accept negative quantity value.")
+
                     order.append((dish, food_quantity))
                     qty_total = dish.price * food_quantity
                     print(f"Added: {food_quantity}x {dish.name} - Rs {qty_total}")
