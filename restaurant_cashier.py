@@ -1,3 +1,10 @@
+# This project is for a restaurant cashier system, that has menu of different items.
+# This small system, takes client orders, generates an invoice number, and stores the 
+# order details in a text file named "invoice.txt". After every order, the "invoice.txt"
+# is overwritten.
+
+#-------------------- START ------------------------------------------------------
+
 # Create parent class Menu
 class Menu:
     def __init__(self, name):
@@ -13,6 +20,12 @@ class Menu:
     
 
 # Using Multilevel and Hierarchical Inheritance
+
+# I have used 2 additional variables: preparation_time and ready_availability.
+# These 2 variables will be used for future work i.e, to work on a dynamic queue
+# that works based on a weightage system using these 2 variables. This system will be
+# for the restaurant's kitchen system.
+
 class Dishes(Menu):
     def __init__(self, name, price, preparation_time, ready_availability=0):
         super().__init__(name)
@@ -252,7 +265,7 @@ alphabet_text = "a b c d e f g h i j k l m n o p q r s t u v w x y z"
 alphabet_array = alphabet_text.upper().split()
 
 current_alphabet_index = 0
-current_number = 0
+current_number = 9999
 
 cashier = Cashier()  # Create an instance of the Cashier class
 
@@ -278,6 +291,7 @@ while True:  # Keep looping until the user stops the cashier
 
 
 
+#---------------FUTURE WORK-------------------------
 
 # FOR KITCHEN SYSTEM
 # SEND ORDER DETAILS TO KITCHEN

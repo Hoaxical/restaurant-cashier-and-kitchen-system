@@ -1,10 +1,7 @@
-2x Biryani: Rs 300
-1x Fried Rice: Rs 150
-2x Fried Noodles: Rs 250
-2x Chicken Burger: Rs 198
-1x Fried Rice: Rs 150
-VAT : 15% | Total (VAT inc.) : Rs 1205.2
+1x Biryani: Rs 150
 
-Ordered at 2025-03-13 20:31:15
+VAT : 15% | Total (VAT inc.) : Rs 172.5
 
-Thank you for ordering! ORDER #A0001
+Ordered at 2025-03-15 23:36:32
+
+Thank you for ordering! ORDER #B0001
